@@ -1,6 +1,6 @@
 diff -uprN pi-hole-4.2.2/adlists.list pi-hole-4.2.2.cust/adlists.list
 --- pi-hole-4.2.2/adlists.list	1970-01-01 01:00:00.000000000 +0100
-+++ pi-hole-4.2.2.cust/adlists.list	2019-02-18 19:33:04.274793869 +0100
++++ pi-hole-4.2.2.cust/adlists.list	2019-02-21 15:58:32.785720257 +0100
 @@ -0,0 +1,7 @@
 +https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
 +https://mirror1.malwaredomains.com/files/justdomains
@@ -11,7 +11,7 @@ diff -uprN pi-hole-4.2.2/adlists.list pi-hole-4.2.2.cust/adlists.list
 +https://hosts-file.net/ad_servers.txt
 diff -uprN pi-hole-4.2.2/advanced/Scripts/webpage.sh pi-hole-4.2.2.cust/advanced/Scripts/webpage.sh
 --- pi-hole-4.2.2/advanced/Scripts/webpage.sh	2019-02-18 18:36:13.000000000 +0100
-+++ pi-hole-4.2.2.cust/advanced/Scripts/webpage.sh	2019-02-18 19:33:04.274793869 +0100
++++ pi-hole-4.2.2.cust/advanced/Scripts/webpage.sh	2019-02-21 15:58:32.782386930 +0100
 @@ -28,10 +28,6 @@ Example: pihole -a -p password
  Set options for the Admin Console
  
@@ -191,7 +191,7 @@ diff -uprN pi-hole-4.2.2/advanced/Scripts/webpage.sh pi-hole-4.2.2.cust/advanced
          "removestaticdhcp"    ) RemoveDHCPStaticAddress;;
 diff -uprN pi-hole-4.2.2/gravity.sh pi-hole-4.2.2.cust/gravity.sh
 --- pi-hole-4.2.2/gravity.sh	2019-02-18 18:36:13.000000000 +0100
-+++ pi-hole-4.2.2.cust/gravity.sh	2019-02-18 19:33:04.194794082 +0100
++++ pi-hole-4.2.2.cust/gravity.sh	2019-02-21 15:58:32.715720394 +0100
 @@ -19,7 +19,7 @@ regexconverter="/opt/pihole/wildcard_reg
  source "${regexconverter}"
  
@@ -203,7 +203,7 @@ diff -uprN pi-hole-4.2.2/gravity.sh pi-hole-4.2.2.cust/gravity.sh
  
 diff -uprN pi-hole-4.2.2/pihole pi-hole-4.2.2.cust/pihole
 --- pi-hole-4.2.2/pihole	2019-02-18 18:36:13.000000000 +0100
-+++ pi-hole-4.2.2.cust/pihole	2019-02-18 19:33:04.191460757 +0100
++++ pi-hole-4.2.2.cust/pihole	2019-02-21 15:58:32.712387067 +0100
 @@ -13,7 +13,6 @@ readonly PI_HOLE_SCRIPT_DIR="/opt/pihole
  readonly gravitylist="/etc/pihole/gravity.list"
  readonly blacklist="/etc/pihole/black.list"
@@ -264,7 +264,7 @@ diff -uprN pi-hole-4.2.2/pihole pi-hole-4.2.2.cust/pihole
        svcOption="start"
      fi
 -    svc="service ${resolver} ${svcOption}"
-+    svc="systemctl ${svcOption} pi-hole-ftl"
++    svc="systemctl ${svcOption} ${resolver}"
    fi
  
    # Print output to Terminal, but not to Web Admin
