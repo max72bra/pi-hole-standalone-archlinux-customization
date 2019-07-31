@@ -162,6 +162,10 @@ sed -i "s|/usr/local/bin/|/usr/bin/|w $_ssc" "$dirb"/advanced/Scripts/webpage.sh
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing webpage.sh script 15" && exit 1 ; fi
 
 # -----------------
+
+# pi-hole dnsmasq config file include ready
+echo "conf-dir=/etc/dnsmasq.d/,*.conf" >> "$dirb"/advanced/dnsmasq.conf.original
+
 # adlists.default is gone and adlists.list is populated by install script
 # from basic-install.sh -- function chooseBlocklists()
 cat <<EOF > "$dirb"/adlists.list

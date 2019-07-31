@@ -1,6 +1,6 @@
 diff -uprN pi-hole-4.3.1/adlists.list pi-hole-4.3.1.cust/adlists.list
 --- pi-hole-4.3.1/adlists.list	1970-01-01 01:00:00.000000000 +0100
-+++ pi-hole-4.3.1.cust/adlists.list	2019-06-30 08:37:10.377227844 +0200
++++ pi-hole-4.3.1.cust/adlists.list	2019-07-31 09:10:37.535002417 +0200
 @@ -0,0 +1,7 @@
 +https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
 +https://mirror1.malwaredomains.com/files/justdomains
@@ -11,7 +11,7 @@ diff -uprN pi-hole-4.3.1/adlists.list pi-hole-4.3.1.cust/adlists.list
 +https://hosts-file.net/ad_servers.txt
 diff -uprN pi-hole-4.3.1/advanced/Scripts/webpage.sh pi-hole-4.3.1.cust/advanced/Scripts/webpage.sh
 --- pi-hole-4.3.1/advanced/Scripts/webpage.sh	2019-06-29 21:45:33.000000000 +0200
-+++ pi-hole-4.3.1.cust/advanced/Scripts/webpage.sh	2019-06-30 08:37:10.377227844 +0200
++++ pi-hole-4.3.1.cust/advanced/Scripts/webpage.sh	2019-07-31 09:10:37.535002417 +0200
 @@ -28,10 +28,6 @@ Example: pihole -a -p password
  Set options for the Admin Console
  
@@ -189,9 +189,17 @@ diff -uprN pi-hole-4.3.1/advanced/Scripts/webpage.sh pi-hole-4.3.1.cust/advanced
          "resolve"             ) ResolutionSettings;;
          "addstaticdhcp"       ) AddDHCPStaticAddress;;
          "removestaticdhcp"    ) RemoveDHCPStaticAddress;;
+diff -uprN pi-hole-4.3.1/advanced/dnsmasq.conf.original pi-hole-4.3.1.cust/advanced/dnsmasq.conf.original
+--- pi-hole-4.3.1/advanced/dnsmasq.conf.original	2019-06-29 21:45:33.000000000 +0200
++++ pi-hole-4.3.1.cust/advanced/dnsmasq.conf.original	2019-07-31 09:10:37.535002417 +0200
+@@ -646,3 +646,4 @@
+ 
+ # Include all files in a directory which end in .conf
+ #conf-dir=/etc/dnsmasq.d/*.conf
++conf-dir=/etc/dnsmasq.d/,*.conf
 diff -uprN pi-hole-4.3.1/gravity.sh pi-hole-4.3.1.cust/gravity.sh
 --- pi-hole-4.3.1/gravity.sh	2019-06-29 21:45:33.000000000 +0200
-+++ pi-hole-4.3.1.cust/gravity.sh	2019-06-30 08:37:10.303894669 +0200
++++ pi-hole-4.3.1.cust/gravity.sh	2019-07-31 09:10:37.461669241 +0200
 @@ -19,7 +19,7 @@ regexconverter="/opt/pihole/wildcard_reg
  source "${regexconverter}"
  
@@ -203,7 +211,7 @@ diff -uprN pi-hole-4.3.1/gravity.sh pi-hole-4.3.1.cust/gravity.sh
  
 diff -uprN pi-hole-4.3.1/pihole pi-hole-4.3.1.cust/pihole
 --- pi-hole-4.3.1/pihole	2019-06-29 21:45:33.000000000 +0200
-+++ pi-hole-4.3.1.cust/pihole	2019-06-30 08:37:10.303894669 +0200
++++ pi-hole-4.3.1.cust/pihole	2019-07-31 09:10:37.461669241 +0200
 @@ -13,7 +13,6 @@ readonly PI_HOLE_SCRIPT_DIR="/opt/pihole
  readonly gravitylist="/etc/pihole/gravity.list"
  readonly blacklist="/etc/pihole/black.list"
