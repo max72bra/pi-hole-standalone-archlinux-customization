@@ -1,8 +1,8 @@
 #!/bin/sh
 
-pkgver=4.3.1
-source="https://github.com/pi-hole/pi-hole/archive/v$pkgver.tar.gz"
-dira="pi-hole-$pkgver"
+_pkgver=4.3.2
+source="https://github.com/pi-hole/pi-hole/archive/v$_pkgver.tar.gz"
+dira="pi-hole-$_pkgver"
 dirb="$dira.cust"
 
 _ssc="/tmp/sedcontrol"
@@ -11,11 +11,11 @@ _ssc="/tmp/sedcontrol"
 [[ -d $dirb ]] && rm -r $dirb
 
 wget -q -nc $source
-tar xf v$pkgver.tar.gz
+tar xf v$_pkgver.tar.gz
 cp -a $dira $dirb
 
 # the return of service management
-sed -i "s|service \${resolver} \${svcOption}|systemctl \${svcOption} \${resolver}|w $_ssc" "$dirb"/pihole
+sed -i "s|service \${resolver} restart|systemctl restart \${resolver}|w $_ssc" "$dirb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: the return of service management" && exit 1 ; fi
 
 # setting up and securing pihole wrapper script
@@ -158,8 +158,8 @@ sed -n "/\"privacymode/w $_ssc" "$dirb"/advanced/Scripts/webpage.sh
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing webpage.sh script 15" && exit 1 ; fi
 sed -i '/\"privacymode/d' "$dirb"/advanced/Scripts/webpage.sh
 
-sed -i "s|/usr/local/bin/|/usr/bin/|w $_ssc" "$dirb"/advanced/Scripts/webpage.sh
-if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing webpage.sh script 15" && exit 1 ; fi
+sed -i "s|/usr/local/bin|/usr/bin|w $_ssc" "$dirb"/advanced/Scripts/webpage.sh
+if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing webpage.sh script 16" && exit 1 ; fi
 
 # -----------------
 
@@ -178,6 +178,6 @@ https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
 https://hosts-file.net/ad_servers.txt
 EOF
 
-diff -uprN $dira $dirb > arch-server-core-$pkgver.patch
-git add arch-server-core-$pkgver.patch
+diff -uprN $dira $dirb > arch-server-core-$_pkgver.patch
+git add arch-server-core-$_pkgver.patch
 git add patchgen
