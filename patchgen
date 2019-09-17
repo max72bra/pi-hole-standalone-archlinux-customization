@@ -96,6 +96,10 @@ sed -i '/updatechecker/d' "$dirb"/pihole
 sed -i "s|/usr/local/bin/|/usr/bin/|w $_ssc" "$dirb"/gravity.sh
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setup gravity.sh 1" && exit 1 ; fi
 
+# setup pihole
+sed -i "s|/usr/local/bin|/usr/bin|w $_ssc" "$dirb"/pihole
+if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setup pihole 1" && exit 1 ; fi
+
 # -----------------
 
 # setting up and securing webpage.sh script
@@ -117,7 +121,7 @@ sed -i '/SetExcludeClients() {/,+3d' "$dirb"/advanced/Scripts/webpage.sh
 
 sed -n "/EnableDHCP() {/w $_ssc" "$dirb"/advanced/Scripts/webpage.sh
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing webpage.sh script 5" && exit 1 ; fi
-sed -i '/EnableDHCP() {/,+17d' "$dirb"/advanced/Scripts/webpage.sh
+sed -i '/EnableDHCP() {/,+26d' "$dirb"/advanced/Scripts/webpage.sh
 
 sed -n "/DisableDHCP() {/w $_ssc" "$dirb"/advanced/Scripts/webpage.sh
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing webpage.sh script 6" && exit 1 ; fi
