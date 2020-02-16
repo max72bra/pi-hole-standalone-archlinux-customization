@@ -1,6 +1,6 @@
 diff -uprN pi-hole-4.3.2/adlists.list pi-hole-4.3.2.cust/adlists.list
 --- pi-hole-4.3.2/adlists.list	1970-01-01 01:00:00.000000000 +0100
-+++ pi-hole-4.3.2.cust/adlists.list	2019-09-24 17:44:18.600495711 +0200
++++ pi-hole-4.3.2.cust/adlists.list	2020-02-16 12:50:00.072818191 +0100
 @@ -0,0 +1,6 @@
 +https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
 +https://mirror1.malwaredomains.com/files/justdomains
@@ -10,7 +10,7 @@ diff -uprN pi-hole-4.3.2/adlists.list pi-hole-4.3.2.cust/adlists.list
 +https://hosts-file.net/ad_servers.txt
 diff -uprN pi-hole-4.3.2/advanced/Scripts/webpage.sh pi-hole-4.3.2.cust/advanced/Scripts/webpage.sh
 --- pi-hole-4.3.2/advanced/Scripts/webpage.sh	2019-09-15 17:52:21.000000000 +0200
-+++ pi-hole-4.3.2.cust/advanced/Scripts/webpage.sh	2019-09-24 17:44:18.599495713 +0200
++++ pi-hole-4.3.2.cust/advanced/Scripts/webpage.sh	2020-02-16 12:50:00.071818192 +0100
 @@ -16,7 +16,7 @@ readonly dhcpconfig="/etc/dnsmasq.d/02-p
  readonly FTLconf="/etc/pihole/pihole-FTL.conf"
  # 03 -> wildcards
@@ -199,7 +199,7 @@ diff -uprN pi-hole-4.3.2/advanced/Scripts/webpage.sh pi-hole-4.3.2.cust/advanced
          "removestaticdhcp"    ) RemoveDHCPStaticAddress;;
 diff -uprN pi-hole-4.3.2/advanced/dnsmasq.conf.original pi-hole-4.3.2.cust/advanced/dnsmasq.conf.original
 --- pi-hole-4.3.2/advanced/dnsmasq.conf.original	2019-09-15 17:52:21.000000000 +0200
-+++ pi-hole-4.3.2.cust/advanced/dnsmasq.conf.original	2019-09-24 17:44:18.600495711 +0200
++++ pi-hole-4.3.2.cust/advanced/dnsmasq.conf.original	2020-02-16 12:50:00.071818192 +0100
 @@ -646,3 +646,4 @@
  
  # Include all files in a directory which end in .conf
@@ -207,7 +207,7 @@ diff -uprN pi-hole-4.3.2/advanced/dnsmasq.conf.original pi-hole-4.3.2.cust/advan
 +conf-dir=/etc/dnsmasq.d/,*.conf
 diff -uprN pi-hole-4.3.2/gravity.sh pi-hole-4.3.2.cust/gravity.sh
 --- pi-hole-4.3.2/gravity.sh	2019-09-15 17:52:21.000000000 +0200
-+++ pi-hole-4.3.2.cust/gravity.sh	2019-09-24 17:44:18.512495854 +0200
++++ pi-hole-4.3.2.cust/gravity.sh	2020-02-16 12:50:00.011818230 +0100
 @@ -19,7 +19,7 @@ regexconverter="/opt/pihole/wildcard_reg
  source "${regexconverter}"
  
@@ -219,7 +219,7 @@ diff -uprN pi-hole-4.3.2/gravity.sh pi-hole-4.3.2.cust/gravity.sh
  
 diff -uprN pi-hole-4.3.2/pihole pi-hole-4.3.2.cust/pihole
 --- pi-hole-4.3.2/pihole	2019-09-15 17:52:21.000000000 +0200
-+++ pi-hole-4.3.2.cust/pihole	2019-09-24 17:44:18.514495851 +0200
++++ pi-hole-4.3.2.cust/pihole	2020-02-16 12:50:00.013818229 +0100
 @@ -13,11 +13,10 @@ readonly PI_HOLE_SCRIPT_DIR="/opt/pihole
  readonly gravitylist="/etc/pihole/gravity.list"
  readonly blacklist="/etc/pihole/black.list"
@@ -350,7 +350,7 @@ diff -uprN pi-hole-4.3.2/pihole pi-hole-4.3.2.cust/pihole
  updateCheckFunc() {
    "${PI_HOLE_SCRIPT_DIR}"/updatecheck.sh "$@"
    exit 0
-@@ -390,33 +304,24 @@ Whitelist/Blacklist Options:
+@@ -390,33 +304,22 @@ Whitelist/Blacklist Options:
  Debugging Options:
    -d, debug           Start a debugging session
                          Add '-a' to enable automated debugging
@@ -361,7 +361,7 @@ diff -uprN pi-hole-4.3.2/pihole pi-hole-4.3.2.cust/pihole
  Options:
 -  -a, admin           Web interface options
 -                        Add '-h' for more info on Web Interface usage
-   -c, chronometer     Calculates stats and displays to an LCD
+-  -c, chronometer     Calculates stats and displays to an LCD
                          Add '-h' for more info on chronometer usage
    -g, updateGravity   Update the list of ad-serving domains
    -h, --help, help    Show this help dialog
@@ -371,7 +371,7 @@ diff -uprN pi-hole-4.3.2/pihole pi-hole-4.3.2.cust/pihole
                          Add '-h' for more info on query usage
 -  -up, updatePihole   Update Pi-hole subsystems
                          Add '--check-only' to exit script before update is performed.
-   -v, version         Show installed versions of Pi-hole, Web Interface & FTL
+-  -v, version         Show installed versions of Pi-hole, Web Interface & FTL
                          Add '-h' for more info on version usage
 -  uninstall           Uninstall Pi-hole from your system
    status              Display the running status of Pi-hole subsystems
@@ -385,16 +385,16 @@ diff -uprN pi-hole-4.3.2/pihole pi-hole-4.3.2.cust/pihole
    exit 0
  }
  
-@@ -447,23 +352,17 @@ case "${1}" in
+@@ -447,23 +350,15 @@ case "${1}" in
    "--regex" | "regex"            ) listFunc "$@";;
    "-d" | "debug"                ) debugFunc "$@";;
    "-f" | "flush"                ) flushFunc "$@";;
 -  "-up" | "updatePihole"        ) updatePiholeFunc "$@";;
 -  "-r"  | "reconfigure"         ) reconfigurePiholeFunc;;
    "-g" | "updateGravity"        ) updateGravityFunc "$@";;
-   "-c" | "chronometer"          ) chronometerFunc "$@";;
+-  "-c" | "chronometer"          ) chronometerFunc "$@";;
    "-h" | "help"                 ) helpFunc;;
-   "-v" | "version"              ) versionFunc "$@";;
+-  "-v" | "version"              ) versionFunc "$@";;
    "-q" | "query"                ) queryFunc "$@";;
    "-l" | "logging"              ) piholeLogging "$@";;
 -  "uninstall"                   ) uninstallFunc;;

@@ -55,13 +55,13 @@ sed -n "/tricorderFunc() {/w $_ssc" "$dirb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 6" && exit 1 ; fi
 sed -i '/tricorderFunc() {/,+30d' "$dirb"/pihole
 
-sed -n "/\"\-[r,up]/w $_ssc" "$dirb"/pihole
+sed -n "/\"\-[r,c,v,up]/w $_ssc" "$dirb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 7" && exit 1 ; fi
-sed -i '/\"\-[r,up]/d' "$dirb"/pihole
+sed -i '/\"\-[r,c,v,up]/d' "$dirb"/pihole
 
-sed -n "/^  \-[r,t,l,f],/w $_ssc" "$dirb"/pihole
+sed -n "/^  \-[r,t,l,f,c,v],/w $_ssc" "$dirb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 11" && exit 1 ; fi
-sed -i '/^  \-[r,t,l,f],/d' "$dirb"/pihole
+sed -i '/^  \-[r,t,l,f,c,v],/d' "$dirb"/pihole
 
 sed -n "/^  \-up,/w $_ssc" "$dirb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 13" && exit 1 ; fi
