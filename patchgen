@@ -1,6 +1,6 @@
 #!/bin/sh
 
-_pkgver=4.4
+_pkgver=5.0
 source="https://github.com/pi-hole/pi-hole/archive/v$_pkgver.tar.gz"
 dira="pi-hole-$_pkgver"
 dirb="$dira.cust"
@@ -53,7 +53,7 @@ sed -i '/piholeCheckoutFunc() {/,+22d' "$dirb"/pihole
 
 sed -n "/tricorderFunc() {/w $_ssc" "$dirb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 6" && exit 1 ; fi
-sed -i '/tricorderFunc() {/,+30d' "$dirb"/pihole
+sed -i '/tricorderFunc() {/,+29d' "$dirb"/pihole
 
 sed -n "/\"\-[r,c,v,up]/w $_ssc" "$dirb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 7" && exit 1 ; fi
@@ -75,12 +75,13 @@ sed -n "/uninstall/w $_ssc" "$dirb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 11" && exit 1 ; fi
 sed -i '/uninstall/d' "$dirb"/pihole
 
-sed -i "s|^  checkout.*$|\";|w $_ssc" "$dirb"/pihole
+sed -n "/^  checkout/w $_ssc" "$dirb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 12" && exit 1 ; fi
+sed -i '/^  checkout/,+1d' "$dirb"/pihole
 
-sed -n "/checkout/w $_ssc" "$dirb"/pihole
+sed -n "/^  \"checkout/w $_ssc" "$dirb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 13" && exit 1 ; fi
-sed -i '/checkout/d' "$dirb"/pihole
+sed -i '/^  \"checkout/d' "$dirb"/pihole
 
 sed -n "/tricorder/w $_ssc" "$dirb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 14" && exit 1 ; fi
@@ -95,6 +96,10 @@ sed -i '/updatechecker/d' "$dirb"/pihole
 # setup gravity.sh
 sed -i "s|/usr/local/bin/|/usr/bin/|w $_ssc" "$dirb"/gravity.sh
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setup gravity.sh 1" && exit 1 ; fi
+sed -i "s|source \"/etc/.pihole/advanced/Scripts/database_migration/gravity-db.sh\"|source \"/opt/pihole/database_migration/gravity-db.sh\"|w $_ssc" "$dirb"/gravity.sh
+if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setup gravity.sh 2" && exit 1 ; fi
+sed -i "s|\${piholeGitDir}/advanced/Templates/gravity|/opt/pihole/gravity|w $_ssc" "$dirb"/gravity.sh
+if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setup gravity.sh 3" && exit 1 ; fi
 
 # setup pihole
 sed -i "s|/usr/local/bin|/usr/bin|w $_ssc" "$dirb"/pihole
@@ -175,10 +180,8 @@ echo "conf-dir=/etc/dnsmasq.d/,*.conf" >> "$dirb"/advanced/dnsmasq.conf.original
 cat <<EOF > "$dirb"/adlists.list
 https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
 https://mirror1.malwaredomains.com/files/justdomains
-http://sysctl.org/cameleon/hosts
 https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt
 https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
-https://hosts-file.net/ad_servers.txt
 EOF
 
 diff -uprN $dira $dirb > arch-server-core-$_pkgver.patch
