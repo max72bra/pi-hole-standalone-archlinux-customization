@@ -1,6 +1,6 @@
 #!/bin/sh
 
-_pkgver=5.0
+_pkgver=5.1.1
 source="https://github.com/pi-hole/pi-hole/archive/v$_pkgver.tar.gz"
 dira="pi-hole-$_pkgver"
 dirb="$dira.cust"
@@ -167,8 +167,8 @@ sed -n "/\"privacymode/w $_ssc" "$dirb"/advanced/Scripts/webpage.sh
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing webpage.sh script 15" && exit 1 ; fi
 sed -i '/\"privacymode/d' "$dirb"/advanced/Scripts/webpage.sh
 
-sed -i "s|/usr/local/bin|/usr/bin|w $_ssc" "$dirb"/advanced/Scripts/webpage.sh
-if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing webpage.sh script 16" && exit 1 ; fi
+#sed -i "s|/usr/local/bin|/usr/bin|w $_ssc" "$dirb"/advanced/Scripts/webpage.sh
+#if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing webpage.sh script 16" && exit 1 ; fi
 
 # -----------------
 
