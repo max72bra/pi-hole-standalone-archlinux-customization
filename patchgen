@@ -1,6 +1,6 @@
 #!/bin/sh
 
-_pkgver=5.1.1
+_pkgver=5.1.2
 source="https://github.com/pi-hole/pi-hole/archive/v$_pkgver.tar.gz"
 dira="pi-hole-$_pkgver"
 dirb="$dira.cust"
@@ -15,7 +15,7 @@ tar xf v$_pkgver.tar.gz
 cp -a $dira $dirb
 
 # the return of service management
-sed -i "s|service \${resolver} restart|systemctl restart \${resolver}|w $_ssc" "$dirb"/pihole
+sed -i "s|service pihole-FTL restart|systemctl restart pihole-FTL|w $_ssc" "$dirb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: the return of service management" && exit 1 ; fi
 
 # setting up and securing pihole wrapper script
