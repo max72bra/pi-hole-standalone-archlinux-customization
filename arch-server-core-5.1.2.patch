@@ -1,6 +1,6 @@
 diff -uprN pi-hole-5.1.2/adlists.list pi-hole-5.1.2.cust/adlists.list
 --- pi-hole-5.1.2/adlists.list	1970-01-01 01:00:00.000000000 +0100
-+++ pi-hole-5.1.2.cust/adlists.list	2020-08-12 12:02:41.096302554 +0200
++++ pi-hole-5.1.2.cust/adlists.list	2020-09-04 20:12:55.061501665 +0200
 @@ -0,0 +1,4 @@
 +https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
 +https://mirror1.malwaredomains.com/files/justdomains
@@ -8,7 +8,16 @@ diff -uprN pi-hole-5.1.2/adlists.list pi-hole-5.1.2.cust/adlists.list
 +https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
 diff -uprN pi-hole-5.1.2/advanced/Scripts/webpage.sh pi-hole-5.1.2.cust/advanced/Scripts/webpage.sh
 --- pi-hole-5.1.2/advanced/Scripts/webpage.sh	2020-08-09 23:22:16.000000000 +0200
-+++ pi-hole-5.1.2.cust/advanced/Scripts/webpage.sh	2020-08-12 12:02:41.095302555 +0200
++++ pi-hole-5.1.2.cust/advanced/Scripts/webpage.sh	2020-09-04 20:12:55.060501661 +0200
+@@ -24,7 +24,7 @@ readonly gravityDBfile="/etc/pihole/grav
+ readonly PI_HOLE_FILES_DIR="/etc/.pihole"
+ # shellcheck disable=SC2034  # used in basic-install
+ PH_TEST="true"
+-source "${PI_HOLE_FILES_DIR}/automated install/basic-install.sh"
++source "/opt/pihole/basic-install.sh"
+ 
+ coltable="/opt/pihole/COL_TABLE"
+ if [[ -f ${coltable} ]]; then
 @@ -37,10 +37,6 @@ Example: pihole -a -p password
  Set options for the Admin Console
  
@@ -189,7 +198,7 @@ diff -uprN pi-hole-5.1.2/advanced/Scripts/webpage.sh pi-hole-5.1.2.cust/advanced
          "removestaticdhcp"    ) RemoveDHCPStaticAddress;;
 diff -uprN pi-hole-5.1.2/advanced/dnsmasq.conf.original pi-hole-5.1.2.cust/advanced/dnsmasq.conf.original
 --- pi-hole-5.1.2/advanced/dnsmasq.conf.original	2020-08-09 23:22:16.000000000 +0200
-+++ pi-hole-5.1.2.cust/advanced/dnsmasq.conf.original	2020-08-12 12:02:41.095302555 +0200
++++ pi-hole-5.1.2.cust/advanced/dnsmasq.conf.original	2020-09-04 20:12:55.060501661 +0200
 @@ -646,3 +646,4 @@
  
  # Include all files in a directory which end in .conf
@@ -197,7 +206,7 @@ diff -uprN pi-hole-5.1.2/advanced/dnsmasq.conf.original pi-hole-5.1.2.cust/advan
 +conf-dir=/etc/dnsmasq.d/,*.conf
 diff -uprN pi-hole-5.1.2/gravity.sh pi-hole-5.1.2.cust/gravity.sh
 --- pi-hole-5.1.2/gravity.sh	2020-08-09 23:22:16.000000000 +0200
-+++ pi-hole-5.1.2.cust/gravity.sh	2020-08-12 12:02:41.030302573 +0200
++++ pi-hole-5.1.2.cust/gravity.sh	2020-09-04 20:12:54.989501397 +0200
 @@ -18,10 +18,10 @@ source "${coltable}"
  regexconverter="/opt/pihole/wildcard_regex_converter.sh"
  source "${regexconverter}"
@@ -224,7 +233,7 @@ diff -uprN pi-hole-5.1.2/gravity.sh pi-hole-5.1.2.cust/gravity.sh
  domainsExtension="domains"
 diff -uprN pi-hole-5.1.2/pihole pi-hole-5.1.2.cust/pihole
 --- pi-hole-5.1.2/pihole	2020-08-09 23:22:16.000000000 +0200
-+++ pi-hole-5.1.2.cust/pihole	2020-08-12 12:02:41.032302572 +0200
++++ pi-hole-5.1.2.cust/pihole	2020-09-04 20:12:54.991501405 +0200
 @@ -15,7 +15,7 @@ readonly PI_HOLE_SCRIPT_DIR="/opt/pihole
  # they might get set again when the installer is sourced. This causes an
  # error due to modifying a readonly variable.

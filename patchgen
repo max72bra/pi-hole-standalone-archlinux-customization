@@ -107,6 +107,12 @@ if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setup pihole 1" &
 
 # -----------------
 
+# change FTL port file location to chronometer.sh
+sed -i "s|\${PI_HOLE_FILES_DIR}/automated install/basic-install.sh|/opt/pihole/basic-install.sh|w $_ssc" "$dirb"/advanced/Scripts/webpage.sh
+if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: change FTL port file location to chronometer.sh" && exit 1 ; fi
+
+# -----------------
+
 # setting up and securing webpage.sh script
 sed -n "/SetWebPassword() {/w $_ssc" "$dirb"/advanced/Scripts/webpage.sh
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing webpage.sh script 1" && exit 1 ; fi
