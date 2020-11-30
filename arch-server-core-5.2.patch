@@ -1,14 +1,26 @@
 diff -uprN pi-hole-5.2/adlists.list pi-hole-5.2.cust/adlists.list
 --- pi-hole-5.2/adlists.list	1970-01-01 01:00:00.000000000 +0100
-+++ pi-hole-5.2.cust/adlists.list	2020-11-29 18:44:28.090599294 +0100
++++ pi-hole-5.2.cust/adlists.list	2020-11-30 13:25:40.896583479 +0100
 @@ -0,0 +1,4 @@
 +https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
 +https://mirror1.malwaredomains.com/files/justdomains
 +https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt
 +https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
+diff -uprN pi-hole-5.2/advanced/Scripts/database_migration/gravity-db.sh pi-hole-5.2.cust/advanced/Scripts/database_migration/gravity-db.sh
+--- pi-hole-5.2/advanced/Scripts/database_migration/gravity-db.sh	2020-11-28 20:05:01.000000000 +0100
++++ pi-hole-5.2.cust/advanced/Scripts/database_migration/gravity-db.sh	2020-11-30 13:25:40.834583307 +0100
+@@ -10,7 +10,7 @@
+ # This file is copyright under the latest version of the EUPL.
+ # Please see LICENSE file for your rights under this license.
+ 
+-readonly scriptPath="/etc/.pihole/advanced/Scripts/database_migration/gravity"
++readonly scriptPath="/opt/pihole/database_migration/gravity"
+ 
+ upgrade_gravityDB(){
+ 	local database piholeDir auditFile version
 diff -uprN pi-hole-5.2/advanced/Scripts/webpage.sh pi-hole-5.2.cust/advanced/Scripts/webpage.sh
 --- pi-hole-5.2/advanced/Scripts/webpage.sh	2020-11-28 20:05:01.000000000 +0100
-+++ pi-hole-5.2.cust/advanced/Scripts/webpage.sh	2020-11-29 18:44:28.090599294 +0100
++++ pi-hole-5.2.cust/advanced/Scripts/webpage.sh	2020-11-30 13:25:40.896583479 +0100
 @@ -24,7 +24,7 @@ readonly gravityDBfile="/etc/pihole/grav
  readonly PI_HOLE_FILES_DIR="/etc/.pihole"
  # shellcheck disable=SC2034  # used in basic-install
@@ -198,7 +210,7 @@ diff -uprN pi-hole-5.2/advanced/Scripts/webpage.sh pi-hole-5.2.cust/advanced/Scr
          "removestaticdhcp"    ) RemoveDHCPStaticAddress;;
 diff -uprN pi-hole-5.2/advanced/dnsmasq.conf.original pi-hole-5.2.cust/advanced/dnsmasq.conf.original
 --- pi-hole-5.2/advanced/dnsmasq.conf.original	2020-11-28 20:05:01.000000000 +0100
-+++ pi-hole-5.2.cust/advanced/dnsmasq.conf.original	2020-11-29 18:44:28.090599294 +0100
++++ pi-hole-5.2.cust/advanced/dnsmasq.conf.original	2020-11-30 13:25:40.896583479 +0100
 @@ -646,3 +646,4 @@
  
  # Include all files in a directory which end in .conf
@@ -206,7 +218,7 @@ diff -uprN pi-hole-5.2/advanced/dnsmasq.conf.original pi-hole-5.2.cust/advanced/
 +conf-dir=/etc/dnsmasq.d/,*.conf
 diff -uprN pi-hole-5.2/gravity.sh pi-hole-5.2.cust/gravity.sh
 --- pi-hole-5.2/gravity.sh	2020-11-28 20:05:01.000000000 +0100
-+++ pi-hole-5.2.cust/gravity.sh	2020-11-29 18:44:28.027599126 +0100
++++ pi-hole-5.2.cust/gravity.sh	2020-11-30 13:25:40.833583304 +0100
 @@ -18,10 +18,10 @@ source "${coltable}"
  regexconverter="/opt/pihole/wildcard_regex_converter.sh"
  source "${regexconverter}"
@@ -233,7 +245,7 @@ diff -uprN pi-hole-5.2/gravity.sh pi-hole-5.2.cust/gravity.sh
  
 diff -uprN pi-hole-5.2/pihole pi-hole-5.2.cust/pihole
 --- pi-hole-5.2/pihole	2020-11-28 20:05:01.000000000 +0100
-+++ pi-hole-5.2.cust/pihole	2020-11-29 18:44:28.030599134 +0100
++++ pi-hole-5.2.cust/pihole	2020-11-30 13:25:40.836583312 +0100
 @@ -15,7 +15,7 @@ readonly PI_HOLE_SCRIPT_DIR="/opt/pihole
  # they might get set again when the installer is sourced. This causes an
  # error due to modifying a readonly variable.
