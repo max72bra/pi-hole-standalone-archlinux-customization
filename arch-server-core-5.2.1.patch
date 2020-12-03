@@ -1,18 +1,36 @@
-diff -uprN pi-hole-4.1.1/adlists.list pi-hole-4.1.1.cust/adlists.list
---- pi-hole-4.1.1/adlists.list	1970-01-01 01:00:00.000000000 +0100
-+++ pi-hole-4.1.1.cust/adlists.list	2018-12-21 23:32:49.862403602 +0100
-@@ -0,0 +1,7 @@
+diff -uprN pi-hole-5.2.1/adlists.list pi-hole-5.2.1.cust/adlists.list
+--- pi-hole-5.2.1/adlists.list	1970-01-01 01:00:00.000000000 +0100
++++ pi-hole-5.2.1.cust/adlists.list	2020-12-03 09:24:11.010407474 +0100
+@@ -0,0 +1,4 @@
 +https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
 +https://mirror1.malwaredomains.com/files/justdomains
-+http://sysctl.org/cameleon/hosts
-+https://zeustracker.abuse.ch/blocklist.php?download=domainblocklist
 +https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt
 +https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
-+https://hosts-file.net/ad_servers.txt
-diff -uprN pi-hole-4.1.1/advanced/Scripts/webpage.sh pi-hole-4.1.1.cust/advanced/Scripts/webpage.sh
---- pi-hole-4.1.1/advanced/Scripts/webpage.sh	2018-12-21 18:06:19.000000000 +0100
-+++ pi-hole-4.1.1.cust/advanced/Scripts/webpage.sh	2018-12-21 23:32:49.862403602 +0100
-@@ -28,10 +28,6 @@ Example: pihole -a -p password
+diff -uprN pi-hole-5.2.1/advanced/Scripts/database_migration/gravity-db.sh pi-hole-5.2.1.cust/advanced/Scripts/database_migration/gravity-db.sh
+--- pi-hole-5.2.1/advanced/Scripts/database_migration/gravity-db.sh	2020-12-02 22:37:42.000000000 +0100
++++ pi-hole-5.2.1.cust/advanced/Scripts/database_migration/gravity-db.sh	2020-12-03 09:24:10.948405924 +0100
+@@ -10,7 +10,7 @@
+ # This file is copyright under the latest version of the EUPL.
+ # Please see LICENSE file for your rights under this license.
+ 
+-readonly scriptPath="/etc/.pihole/advanced/Scripts/database_migration/gravity"
++readonly scriptPath="/opt/pihole/database_migration/gravity"
+ 
+ upgrade_gravityDB(){
+ 	local database piholeDir auditFile version
+diff -uprN pi-hole-5.2.1/advanced/Scripts/webpage.sh pi-hole-5.2.1.cust/advanced/Scripts/webpage.sh
+--- pi-hole-5.2.1/advanced/Scripts/webpage.sh	2020-12-02 22:37:42.000000000 +0100
++++ pi-hole-5.2.1.cust/advanced/Scripts/webpage.sh	2020-12-03 09:24:11.010407474 +0100
+@@ -24,7 +24,7 @@ readonly gravityDBfile="/etc/pihole/grav
+ readonly PI_HOLE_FILES_DIR="/etc/.pihole"
+ # shellcheck disable=SC2034  # used in basic-install
+ PH_TEST="true"
+-source "${PI_HOLE_FILES_DIR}/automated install/basic-install.sh"
++source "/opt/pihole/basic-install.sh"
+ 
+ coltable="/opt/pihole/COL_TABLE"
+ if [[ -f ${coltable} ]]; then
+@@ -37,10 +37,6 @@ Example: pihole -a -p password
  Set options for the Admin Console
  
  Options:
@@ -20,10 +38,10 @@ diff -uprN pi-hole-4.1.1/advanced/Scripts/webpage.sh pi-hole-4.1.1.cust/advanced
 -  -c, celsius         Set Celsius as preferred temperature unit
 -  -f, fahrenheit      Set Fahrenheit as preferred temperature unit
 -  -k, kelvin          Set Kelvin as preferred temperature unit
-   -r, hostrecord      Add a name to the DNS associated to an IPv4/IPv6 address
    -e, email           Set an administrative contact address for the Block Page
    -h, --help          Show this help dialog
-@@ -78,10 +74,6 @@ delete_dnsmasq_setting() {
+   -i, interface       Specify dnsmasq's interface listening behavior
+@@ -86,10 +82,6 @@ delete_dnsmasq_setting() {
      sed -i "/${1}/d" "${dnsmasqconfig}"
  }
  
@@ -34,8 +52,8 @@ diff -uprN pi-hole-4.1.1/advanced/Scripts/webpage.sh pi-hole-4.1.1.cust/advanced
  
  HashPassword() {
      # Compute password hash twice to avoid rainbow table vulnerability
-@@ -90,51 +82,6 @@ HashPassword() {
-     echo ${return}
+@@ -98,51 +90,6 @@ HashPassword() {
+     echo "${return}"
  }
  
 -SetWebPassword() {
@@ -86,7 +104,7 @@ diff -uprN pi-hole-4.1.1/advanced/Scripts/webpage.sh pi-hole-4.1.1.cust/advanced
  ProcessDNSSettings() {
      source "${setupVars}"
  
-@@ -257,14 +204,6 @@ SetDNSServers() {
+@@ -337,14 +284,6 @@ SetDNSServers() {
      RestartDNS
  }
  
@@ -101,16 +119,7 @@ diff -uprN pi-hole-4.1.1/advanced/Scripts/webpage.sh pi-hole-4.1.1.cust/advanced
  Poweroff(){
      nohup bash -c "sleep 5; poweroff" &> /dev/null </dev/null &
  }
-@@ -274,7 +213,7 @@ Reboot() {
- }
- 
- RestartDNS() {
--    /usr/local/bin/pihole restartdns
-+    /usr/bin/pihole restartdns
- }
- 
- SetQueryLogOptions() {
-@@ -343,40 +282,6 @@ ra-param=*,0,0
+@@ -438,49 +377,6 @@ ra-param=*,0,0
      fi
  }
  
@@ -122,10 +131,19 @@ diff -uprN pi-hole-4.1.1/advanced/Scripts/webpage.sh pi-hole-4.1.1.cust/advanced
 -    change_setting "DHCP_LEASETIME" "${args[5]}"
 -    change_setting "PIHOLE_DOMAIN" "${args[6]}"
 -    change_setting "DHCP_IPv6" "${args[7]}"
+-    change_setting "DHCP_rapid_commit" "${args[8]}"
 -
 -    # Remove possible old setting from file
 -    delete_dnsmasq_setting "dhcp-"
 -    delete_dnsmasq_setting "quiet-dhcp"
+-
+-    # If a DHCP client claims that its name is "wpad", ignore that.
+-    # This fixes a security hole. see CERT Vulnerability VU#598349
+-    # We also ignore "localhost" as Windows behaves strangely if a
+-    # device claims this host name
+-    add_dnsmasq_setting "dhcp-name-match=set:hostname-ignore,wpad
+-dhcp-name-match=set:hostname-ignore,localhost
+-dhcp-ignore-names=tag:hostname-ignore"
 -
 -    ProcessDHCPSettings
 -
@@ -148,10 +166,10 @@ diff -uprN pi-hole-4.1.1/advanced/Scripts/webpage.sh pi-hole-4.1.1.cust/advanced
 -    change_setting "WEBUIBOXEDLAYOUT" "${args[2]}"
 -}
 -
- CustomizeAdLists() {
-     list="/etc/pihole/adlists.list"
- 
-@@ -397,14 +302,6 @@ CustomizeAdLists() {
+ SetWebUITheme() {
+     change_setting "WEBTHEME" "${args[2]}"
+ }
+@@ -521,14 +417,6 @@ CustomizeAdLists() {
      fi
  }
  
@@ -166,7 +184,7 @@ diff -uprN pi-hole-4.1.1/advanced/Scripts/webpage.sh pi-hole-4.1.1.cust/advanced
  ResolutionSettings() {
      typ="${args[2]}"
      state="${args[3]}"
-@@ -552,22 +449,12 @@ main() {
+@@ -732,23 +620,13 @@ main() {
      args=("$@")
  
      case "${args[1]}" in
@@ -184,16 +202,29 @@ diff -uprN pi-hole-4.1.1/advanced/Scripts/webpage.sh pi-hole-4.1.1.cust/advanced
 -        "enabledhcp"          ) EnableDHCP;;
 -        "disabledhcp"         ) DisableDHCP;;
 -        "layout"              ) SetWebUILayout;;
+         "theme"               ) SetWebUITheme;;
          "-h" | "--help"       ) helpFunc;;
 -        "privacymode"         ) SetPrivacyMode;;
          "resolve"             ) ResolutionSettings;;
          "addstaticdhcp"       ) AddDHCPStaticAddress;;
          "removestaticdhcp"    ) RemoveDHCPStaticAddress;;
-diff -uprN pi-hole-4.1.1/gravity.sh pi-hole-4.1.1.cust/gravity.sh
---- pi-hole-4.1.1/gravity.sh	2018-12-21 18:06:19.000000000 +0100
-+++ pi-hole-4.1.1.cust/gravity.sh	2018-12-21 23:32:49.769071092 +0100
-@@ -19,7 +19,7 @@ regexconverter="/opt/pihole/wildcard_reg
+diff -uprN pi-hole-5.2.1/advanced/dnsmasq.conf.original pi-hole-5.2.1.cust/advanced/dnsmasq.conf.original
+--- pi-hole-5.2.1/advanced/dnsmasq.conf.original	2020-12-02 22:37:42.000000000 +0100
++++ pi-hole-5.2.1.cust/advanced/dnsmasq.conf.original	2020-12-03 09:24:11.010407474 +0100
+@@ -646,3 +646,4 @@
+ 
+ # Include all files in a directory which end in .conf
+ #conf-dir=/etc/dnsmasq.d/*.conf
++conf-dir=/etc/dnsmasq.d/,*.conf
+diff -uprN pi-hole-5.2.1/gravity.sh pi-hole-5.2.1.cust/gravity.sh
+--- pi-hole-5.2.1/gravity.sh	2020-12-02 22:37:42.000000000 +0100
++++ pi-hole-5.2.1.cust/gravity.sh	2020-12-03 09:24:10.945405850 +0100
+@@ -18,10 +18,10 @@ source "${coltable}"
+ regexconverter="/opt/pihole/wildcard_regex_converter.sh"
  source "${regexconverter}"
+ # shellcheck disable=SC1091
+-source "/etc/.pihole/advanced/Scripts/database_migration/gravity-db.sh"
++source "/opt/pihole/database_migration/gravity-db.sh"
  
  basename="pihole"
 -PIHOLE_COMMAND="/usr/local/bin/${basename}"
@@ -201,18 +232,30 @@ diff -uprN pi-hole-4.1.1/gravity.sh pi-hole-4.1.1.cust/gravity.sh
  
  piholeDir="/etc/${basename}"
  
-diff -uprN pi-hole-4.1.1/pihole pi-hole-4.1.1.cust/pihole
---- pi-hole-4.1.1/pihole	2018-12-21 18:06:19.000000000 +0100
-+++ pi-hole-4.1.1.cust/pihole	2018-12-21 23:32:49.752404572 +0100
-@@ -13,7 +13,6 @@ readonly PI_HOLE_SCRIPT_DIR="/opt/pihole
- readonly gravitylist="/etc/pihole/gravity.list"
- readonly blacklist="/etc/pihole/black.list"
+@@ -37,8 +37,8 @@ VPNList="/etc/openvpn/ipp.txt"
+ piholeGitDir="/etc/.pihole"
+ gravityDBfile="${piholeDir}/gravity.db"
+ gravityTEMPfile="${piholeDir}/gravity_temp.db"
+-gravityDBschema="${piholeGitDir}/advanced/Templates/gravity.db.sql"
+-gravityDBcopy="${piholeGitDir}/advanced/Templates/gravity_copy.sql"
++gravityDBschema="/opt/pihole/gravity.db.sql"
++gravityDBcopy="/opt/pihole/gravity_copy.sql"
  
--# setupVars is not readonly here because in some funcitons (checkout),
- # it might get set again when the installer is sourced. This causes an
+ domainsExtension="domains"
+ 
+diff -uprN pi-hole-5.2.1/pihole pi-hole-5.2.1.cust/pihole
+--- pi-hole-5.2.1/pihole	2020-12-02 22:37:42.000000000 +0100
++++ pi-hole-5.2.1.cust/pihole	2020-12-03 09:24:10.950405975 +0100
+@@ -15,7 +15,7 @@ readonly PI_HOLE_SCRIPT_DIR="/opt/pihole
+ # they might get set again when the installer is sourced. This causes an
  # error due to modifying a readonly variable.
  setupVars="/etc/pihole/setupVars.conf"
-@@ -62,22 +61,6 @@ debugFunc() {
+-PI_HOLE_BIN_DIR="/usr/local/bin"
++PI_HOLE_BIN_DIR="/usr/bin"
+ 
+ readonly colfile="${PI_HOLE_SCRIPT_DIR}/COL_TABLE"
+ source "${colfile}"
+@@ -48,27 +48,11 @@ debugFunc() {
    exit 0
  }
  
@@ -221,6 +264,11 @@ diff -uprN pi-hole-4.1.1/pihole pi-hole-4.1.1.cust/pihole
 -  exit 0
 -}
 -
+ arpFunc() {
+   "${PI_HOLE_SCRIPT_DIR}"/piholeARPTable.sh "$@"
+   exit 0
+ }
+ 
 -updatePiholeFunc() {
 -  shift
 -  "${PI_HOLE_SCRIPT_DIR}"/update.sh "$@"
@@ -235,7 +283,7 @@ diff -uprN pi-hole-4.1.1/pihole pi-hole-4.1.1.cust/pihole
  updateGravityFunc() {
    "${PI_HOLE_SCRIPT_DIR}"/gravity.sh "$@"
    exit $?
-@@ -89,23 +72,8 @@ queryFunc() {
+@@ -80,23 +64,8 @@ queryFunc() {
    exit 0
  }
  
@@ -259,16 +307,16 @@ diff -uprN pi-hole-4.1.1/pihole pi-hole-4.1.1.cust/pihole
  
  restartDNS() {
    local svcOption svc str output status
-@@ -122,7 +90,7 @@ restartDNS() {
-     else
-       svcOption="start"
-     fi
--    svc="service ${resolver} ${svcOption}"
-+    svc="systemctl ${svcOption} pi-hole-ftl"
+@@ -117,7 +86,7 @@ restartDNS() {
+     str="Flushing DNS cache"
+   else
+     # A full restart has been requested
+-    svc="service pihole-FTL restart"
++    svc="systemctl restart pihole-FTL"
+     str="Restarting DNS server"
    fi
  
-   # Print output to Terminal, but not to Web Admin
-@@ -322,60 +290,6 @@ tailFunc() {
+@@ -343,59 +312,6 @@ tailFunc() {
    exit 0
  }
  
@@ -276,7 +324,7 @@ diff -uprN pi-hole-4.1.1/pihole pi-hole-4.1.1.cust/pihole
 -  if [[ "$2" == "-h" ]] || [[ "$2" == "--help" ]]; then
 -    echo "Usage: pihole checkout [repo] [branch]
 -Example: 'pihole checkout master' or 'pihole checkout core dev'
--Switch Pi-hole subsystems to a different Github branch
+-Switch Pi-hole subsystems to a different GitHub branch
 -
 -Repositories:
 -  core [branch]       Change the branch of Pi-hole's core subsystem
@@ -325,14 +373,14 @@ diff -uprN pi-hole-4.1.1/pihole pi-hole-4.1.1.cust/pihole
 -    exit "$?"
 -  fi
 -}
--
+ 
  updateCheckFunc() {
    "${PI_HOLE_SCRIPT_DIR}"/updatecheck.sh "$@"
-   exit 0
-@@ -396,33 +310,24 @@ Whitelist/Blacklist Options:
+@@ -418,27 +334,16 @@ Whitelist/Blacklist Options:
+ 
  Debugging Options:
    -d, debug           Start a debugging session
-                         Add '-a' to enable automated debugging
+-                        Add '-a' to automatically upload the log to tricorder.pi-hole.net
 -  -f, flush           Flush the Pi-hole log
 -  -r, reconfigure     Reconfigure or Repair Pi-hole subsystems
 -  -t, tail            View the live output of the Pi-hole log
@@ -340,7 +388,7 @@ diff -uprN pi-hole-4.1.1/pihole pi-hole-4.1.1.cust/pihole
  Options:
 -  -a, admin           Web interface options
 -                        Add '-h' for more info on Web Interface usage
-   -c, chronometer     Calculates stats and displays to an LCD
+-  -c, chronometer     Calculates stats and displays to an LCD
                          Add '-h' for more info on chronometer usage
    -g, updateGravity   Update the list of ad-serving domains
    -h, --help, help    Show this help dialog
@@ -350,30 +398,31 @@ diff -uprN pi-hole-4.1.1/pihole pi-hole-4.1.1.cust/pihole
                          Add '-h' for more info on query usage
 -  -up, updatePihole   Update Pi-hole subsystems
                          Add '--check-only' to exit script before update is performed.
-   -v, version         Show installed versions of Pi-hole, Web Interface & FTL
+-  -v, version         Show installed versions of Pi-hole, Web Interface & FTL
                          Add '-h' for more info on version usage
 -  uninstall           Uninstall Pi-hole from your system
    status              Display the running status of Pi-hole subsystems
    enable              Enable Pi-hole subsystems
    disable             Disable Pi-hole subsystems
-                         Add '-h' for more info on disable usage
-   restartdns          Restart Pi-hole subsystems
--  checkout            Switch Pi-hole subsystems to a different Github branch
--                        Add '-h' for more info on checkout usage";
-+";
+@@ -446,8 +351,6 @@ Options:
+   restartdns          Full restart Pi-hole subsystems
+                         Add 'reload' to update the lists and flush the cache without restarting the DNS server
+                         Add 'reload-lists' to only update the lists WITHOUT flushing the cache or restarting the DNS server
+-  checkout            Switch Pi-hole subsystems to a different GitHub branch
+-                        Add '-h' for more info on checkout usage
+   arpflush            Flush information stored in Pi-hole's network tables";
    exit 0
  }
- 
-@@ -438,23 +343,17 @@ case "${1}" in
-   "--regex" | "regex"            ) listFunc "$@";;
+@@ -481,24 +384,16 @@ case "${1}" in
+   "--white-wild" | "white-wild"   ) listFunc "$@";;
    "-d" | "debug"                ) debugFunc "$@";;
    "-f" | "flush"                ) flushFunc "$@";;
 -  "-up" | "updatePihole"        ) updatePiholeFunc "$@";;
 -  "-r"  | "reconfigure"         ) reconfigurePiholeFunc;;
    "-g" | "updateGravity"        ) updateGravityFunc "$@";;
-   "-c" | "chronometer"          ) chronometerFunc "$@";;
+-  "-c" | "chronometer"          ) chronometerFunc "$@";;
    "-h" | "help"                 ) helpFunc;;
-   "-v" | "version"              ) versionFunc "$@";;
+-  "-v" | "version"              ) versionFunc "$@";;
    "-q" | "query"                ) queryFunc "$@";;
    "-l" | "logging"              ) piholeLogging "$@";;
 -  "uninstall"                   ) uninstallFunc;;
@@ -386,5 +435,6 @@ diff -uprN pi-hole-4.1.1/pihole pi-hole-4.1.1.cust/pihole
 -  "checkout"                    ) piholeCheckoutFunc "$@";;
 -  "tricorder"                   ) tricorderFunc;;
 -  "updatechecker"               ) updateCheckFunc "$@";;
+   "arpflush"                    ) arpFunc "$@";;
    *                             ) helpFunc;;
  esac
