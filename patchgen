@@ -113,6 +113,37 @@ if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setup pihole 2" &
 
 # -----------------
 
+# setting up and securing pihole-reenable.sh script
+sed -i "s|/usr/local/bin|/usr/bin|w $_ssc" "$dircoreb"/advanced/Scripts/pihole-reenable.sh
+if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole-reenable.sh script 1" && exit 1 ; fi
+
+# -----------------
+
+# change log location to pihole script
+sed -i "s|/var/log/pihole.log|/run/log/pihole/pihole.log|w $_ssc" "$dircoreb"/pihole
+if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: change log location to pihole script" && exit 1 ; fi
+
+# -----------------
+
+# change log location to piholeLogFlush.sh
+sed -n "/\/var\/log\/pihole.log/w $_ssc" "$dircoreb"/advanced/Scripts/piholeLogFlush.sh
+if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: change log location to piholeLogFlush.sh" && exit 1 ; fi
+sed -i "s|/var/log/pihole.log|/run/log/pihole/pihole.log|g" "$dircoreb"/advanced/Scripts/piholeLogFlush.sh
+
+# -----------------
+
+# change log and bin location to logrotate
+sed -i "s|/var/log/pihole.log|/run/log/pihole/pihole.log|w $_ssc" "$dircoreb"/advanced/Templates/logrotate
+if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: change log and bin location to logrotate 1" && exit 1 ; fi
+sed -i "s|/var/log/pihole-FTL.log|/run/log/pihole-ftl/pihole-FTL.log|w $_ssc" "$dircoreb"/advanced/Templates/logrotate
+if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: change log and bin location to logrotate 2" && exit 1 ; fi
+sed -i "s|/usr/sbin|/usr/bin|w $_ssc" "$dircoreb"/advanced/Scripts/piholeLogFlush.sh
+if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: change log and bin location to logrotate 3" && exit 1 ; fi
+sed -i "s|/var/lib/logrotate/pihole|/var/lib/logrotate_pihole.status|w $_ssc" "$dircoreb"/advanced/Scripts/piholeLogFlush.sh
+if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: change log and bin location to logrotate 3" && exit 1 ; fi
+
+# -----------------
+
 # change FTL port file location to chronometer.sh
 sed -i "s|\${PI_HOLE_FILES_DIR}/automated install/basic-install.sh|/opt/pihole/basic-install.sh|w $_ssc" "$dircoreb"/advanced/Scripts/webpage.sh
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: change FTL port file location to chronometer.sh" && exit 1 ; fi

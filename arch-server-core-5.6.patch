@@ -1,6 +1,6 @@
 diff -uprN pi-hole-5.6/adlists.list pi-hole-5.6.cust/adlists.list
 --- pi-hole-5.6/adlists.list	1970-01-01 01:00:00.000000000 +0100
-+++ pi-hole-5.6.cust/adlists.list	2021-10-23 23:16:28.758521213 +0200
++++ pi-hole-5.6.cust/adlists.list	2021-11-18 23:12:37.728361750 +0100
 @@ -0,0 +1,4 @@
 +https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
 +https://mirror1.malwaredomains.com/files/justdomains
@@ -8,7 +8,7 @@ diff -uprN pi-hole-5.6/adlists.list pi-hole-5.6.cust/adlists.list
 +https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
 diff -uprN pi-hole-5.6/advanced/Scripts/database_migration/gravity-db.sh pi-hole-5.6.cust/advanced/Scripts/database_migration/gravity-db.sh
 --- pi-hole-5.6/advanced/Scripts/database_migration/gravity-db.sh	2021-10-23 21:01:27.000000000 +0200
-+++ pi-hole-5.6.cust/advanced/Scripts/database_migration/gravity-db.sh	2021-10-23 23:16:28.679521006 +0200
++++ pi-hole-5.6.cust/advanced/Scripts/database_migration/gravity-db.sh	2021-11-18 23:12:37.636361426 +0100
 @@ -10,7 +10,7 @@
  # This file is copyright under the latest version of the EUPL.
  # Please see LICENSE file for your rights under this license.
@@ -18,9 +18,90 @@ diff -uprN pi-hole-5.6/advanced/Scripts/database_migration/gravity-db.sh pi-hole
  
  upgrade_gravityDB(){
  	local database piholeDir auditFile version
+diff -uprN pi-hole-5.6/advanced/Scripts/pihole-reenable.sh pi-hole-5.6.cust/advanced/Scripts/pihole-reenable.sh
+--- pi-hole-5.6/advanced/Scripts/pihole-reenable.sh	2021-10-23 21:01:27.000000000 +0200
++++ pi-hole-5.6.cust/advanced/Scripts/pihole-reenable.sh	2021-11-18 23:12:37.644361455 +0100
+@@ -17,7 +17,7 @@
+ # This ensures that pihole ends up in the correct state after a sequence of
+ # commands suchs as: `pihole disable 30s; pihole enable; pihole disable`
+ 
+-readonly PI_HOLE_BIN_DIR="/usr/local/bin"
++readonly PI_HOLE_BIN_DIR="/usr/bin"
+ 
+ sleep "${1}"
+ "${PI_HOLE_BIN_DIR}"/pihole enable
+diff -uprN pi-hole-5.6/advanced/Scripts/piholeLogFlush.sh pi-hole-5.6.cust/advanced/Scripts/piholeLogFlush.sh
+--- pi-hole-5.6/advanced/Scripts/piholeLogFlush.sh	2021-10-23 21:01:27.000000000 +0200
++++ pi-hole-5.6.cust/advanced/Scripts/piholeLogFlush.sh	2021-11-18 23:12:37.660361511 +0100
+@@ -14,7 +14,7 @@ source ${colfile}
+ # In case we're running at the same time as a system logrotate, use a
+ # separate logrotate state file to prevent stepping on each other's
+ # toes.
+-STATEFILE="/var/lib/logrotate/pihole"
++STATEFILE="/var/lib/logrotate_pihole.status"
+ 
+ # Determine database location
+ # Obtain DBFILE=... setting from pihole-FTL.db
+@@ -31,35 +31,35 @@ if [ -z "$DBFILE" ]; then
+ fi
+ 
+ if [[ "$@" != *"quiet"* ]]; then
+-    echo -ne "  ${INFO} Flushing /var/log/pihole.log ..."
++    echo -ne "  ${INFO} Flushing /run/log/pihole/pihole.log ..."
+ fi
+ if [[ "$@" == *"once"* ]]; then
+     # Nightly logrotation
+-    if command -v /usr/sbin/logrotate >/dev/null; then
++    if command -v /usr/bin/logrotate >/dev/null; then
+         # Logrotate once
+-        /usr/sbin/logrotate --force --state "${STATEFILE}" /etc/pihole/logrotate
++        /usr/bin/logrotate --force --state "${STATEFILE}" /etc/pihole/logrotate
+     else
+         # Copy pihole.log over to pihole.log.1
+         # and empty out pihole.log
+         # Note that moving the file is not an option, as
+         # dnsmasq would happily continue writing into the
+         # moved file (it will have the same file handler)
+-        cp -p /var/log/pihole.log /var/log/pihole.log.1
+-        echo " " > /var/log/pihole.log
+-        chmod 644 /var/log/pihole.log
++        cp -p /run/log/pihole/pihole.log /run/log/pihole/pihole.log.1
++        echo " " > /run/log/pihole/pihole.log
++        chmod 644 /run/log/pihole/pihole.log
+     fi
+ else
+     # Manual flushing
+-    if command -v /usr/sbin/logrotate >/dev/null; then
++    if command -v /usr/bin/logrotate >/dev/null; then
+         # Logrotate twice to move all data out of sight of FTL
+-        /usr/sbin/logrotate --force --state "${STATEFILE}" /etc/pihole/logrotate; sleep 3
+-        /usr/sbin/logrotate --force --state "${STATEFILE}" /etc/pihole/logrotate
++        /usr/bin/logrotate --force --state "${STATEFILE}" /etc/pihole/logrotate; sleep 3
++        /usr/bin/logrotate --force --state "${STATEFILE}" /etc/pihole/logrotate
+     else
+         # Flush both pihole.log and pihole.log.1 (if existing)
+-        echo " " > /var/log/pihole.log
+-        if [ -f /var/log/pihole.log.1 ]; then
+-            echo " " > /var/log/pihole.log.1
+-            chmod 644 /var/log/pihole.log.1
++        echo " " > /run/log/pihole/pihole.log
++        if [ -f /run/log/pihole/pihole.log.1 ]; then
++            echo " " > /run/log/pihole/pihole.log.1
++            chmod 644 /run/log/pihole/pihole.log.1
+         fi
+     fi
+     # Delete most recent 24 hours from FTL's database, leave even older data intact (don't wipe out all history)
+@@ -70,6 +70,6 @@ else
+ fi
+ 
+ if [[ "$@" != *"quiet"* ]]; then
+-    echo -e "${OVER}  ${TICK} Flushed /var/log/pihole.log"
++    echo -e "${OVER}  ${TICK} Flushed /run/log/pihole/pihole.log"
+     echo -e "  ${TICK} Deleted ${deleted} queries from database"
+ fi
 diff -uprN pi-hole-5.6/advanced/Scripts/webpage.sh pi-hole-5.6.cust/advanced/Scripts/webpage.sh
 --- pi-hole-5.6/advanced/Scripts/webpage.sh	2021-10-23 21:01:27.000000000 +0200
-+++ pi-hole-5.6.cust/advanced/Scripts/webpage.sh	2021-10-23 23:16:28.757521210 +0200
++++ pi-hole-5.6.cust/advanced/Scripts/webpage.sh	2021-11-18 23:12:37.727361747 +0100
 @@ -24,7 +24,7 @@ readonly gravityDBfile="/etc/pihole/grav
  readonly PI_HOLE_FILES_DIR="/etc/.pihole"
  # shellcheck disable=SC2034  # used in basic-install
@@ -208,9 +289,27 @@ diff -uprN pi-hole-5.6/advanced/Scripts/webpage.sh pi-hole-5.6.cust/advanced/Scr
          "resolve"             ) ResolutionSettings;;
          "addstaticdhcp"       ) AddDHCPStaticAddress;;
          "removestaticdhcp"    ) RemoveDHCPStaticAddress;;
+diff -uprN pi-hole-5.6/advanced/Templates/logrotate pi-hole-5.6.cust/advanced/Templates/logrotate
+--- pi-hole-5.6/advanced/Templates/logrotate	2021-10-23 21:01:27.000000000 +0200
++++ pi-hole-5.6.cust/advanced/Templates/logrotate	2021-11-18 23:12:37.656361497 +0100
+@@ -1,4 +1,4 @@
+-/var/log/pihole.log {
++/run/log/pihole/pihole.log {
+ 	# su #
+ 	daily
+ 	copytruncate
+@@ -9,7 +9,7 @@
+ 	nomail
+ }
+ 
+-/var/log/pihole-FTL.log {
++/run/log/pihole-ftl/pihole-FTL.log {
+ 	# su #
+ 	weekly
+ 	copytruncate
 diff -uprN pi-hole-5.6/advanced/dnsmasq.conf.original pi-hole-5.6.cust/advanced/dnsmasq.conf.original
 --- pi-hole-5.6/advanced/dnsmasq.conf.original	2021-10-23 21:01:27.000000000 +0200
-+++ pi-hole-5.6.cust/advanced/dnsmasq.conf.original	2021-10-23 23:16:28.758521213 +0200
++++ pi-hole-5.6.cust/advanced/dnsmasq.conf.original	2021-11-18 23:12:37.727361747 +0100
 @@ -646,3 +646,4 @@
  
  # Include all files in a directory which end in .conf
@@ -218,7 +317,7 @@ diff -uprN pi-hole-5.6/advanced/dnsmasq.conf.original pi-hole-5.6.cust/advanced/
 +conf-dir=/etc/dnsmasq.d/,*.conf
 diff -uprN pi-hole-5.6/gravity.sh pi-hole-5.6.cust/gravity.sh
 --- pi-hole-5.6/gravity.sh	2021-10-23 21:01:27.000000000 +0200
-+++ pi-hole-5.6.cust/gravity.sh	2021-10-23 23:16:28.676520999 +0200
++++ pi-hole-5.6.cust/gravity.sh	2021-11-18 23:12:37.633361416 +0100
 @@ -16,10 +16,10 @@ export LC_ALL=C
  coltable="/opt/pihole/COL_TABLE"
  source "${coltable}"
@@ -245,7 +344,7 @@ diff -uprN pi-hole-5.6/gravity.sh pi-hole-5.6.cust/gravity.sh
  
 diff -uprN pi-hole-5.6/pihole pi-hole-5.6.cust/pihole
 --- pi-hole-5.6/pihole	2021-10-23 21:01:27.000000000 +0200
-+++ pi-hole-5.6.cust/pihole	2021-10-23 23:16:28.684521020 +0200
++++ pi-hole-5.6.cust/pihole	2021-11-18 23:12:37.648361469 +0100
 @@ -15,8 +15,8 @@ readonly PI_HOLE_SCRIPT_DIR="/opt/pihole
  # they might get set again when the installer is sourced. This causes an
  # error due to modifying a readonly variable.
@@ -318,6 +417,28 @@ diff -uprN pi-hole-5.6/pihole pi-hole-5.6.cust/pihole
      str="Restarting DNS server"
      icon="${TICK}"
    fi
+@@ -255,9 +224,9 @@ Example: 'pihole logging on'
+ Specify whether the Pi-hole log should be used
+ 
+ Options:
+-  on                  Enable the Pi-hole log at /var/log/pihole.log
+-  off                 Disable and flush the Pi-hole log at /var/log/pihole.log
+-  off noflush         Disable the Pi-hole log at /var/log/pihole.log"
++  on                  Enable the Pi-hole log at /run/log/pihole/pihole.log
++  off                 Disable and flush the Pi-hole log at /run/log/pihole/pihole.log
++  off noflush         Disable the Pi-hole log at /run/log/pihole/pihole.log"
+     exit 0
+   elif [[ "${1}" == "off" ]]; then
+     # Disable logging
+@@ -367,7 +336,7 @@ tailFunc() {
+   # Color blocklist/blacklist/wildcard entries as red
+   # Color A/AAAA/DHCP strings as white
+   # Color everything else as gray
+-  tail -f /var/log/pihole.log | grep --line-buffered "${1}" | sed -E \
++  tail -f /run/log/pihole/pihole.log | grep --line-buffered "${1}" | sed -E \
+     -e "s,($(date +'%b %d ')| dnsmasq\[[0-9]*\]),,g" \
+     -e "s,(.*(blacklisted |gravity blocked ).*),${COL_RED}&${COL_NC}," \
+     -e "s,.*(query\\[A|DHCP).*,${COL_NC}&${COL_NC}," \
 @@ -375,50 +344,6 @@ tailFunc() {
    exit 0
  }
