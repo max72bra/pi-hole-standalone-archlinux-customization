@@ -1,6 +1,6 @@
 #!/bin/sh
 
-_pkgver=5.6
+_pkgver=5.7
 source_core="https://github.com/pi-hole/pi-hole/archive/v$_pkgver.tar.gz"
 dircorea="pi-hole-$_pkgver"
 dircoreb="$dircorea.cust"
@@ -179,9 +179,9 @@ sed -n "/SetWebUILayout() {/w $_ssc" "$dircoreb"/advanced/Scripts/webpage.sh
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing webpage.sh script 7" && exit 1 ; fi
 sed -i '/SetWebUILayout() {/,+3d' "$dircoreb"/advanced/Scripts/webpage.sh
 
-sed -n "/SetPrivacyMode() {/w $_ssc" "$dircoreb"/advanced/Scripts/webpage.sh
+sed -n "/SetPrivacyLevel() {/w $_ssc" "$dircoreb"/advanced/Scripts/webpage.sh
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing webpage.sh script 8" && exit 1 ; fi
-sed -i '/SetPrivacyMode() {/,+7d' "$dircoreb"/advanced/Scripts/webpage.sh
+sed -i '/SetPrivacyLevel() {/,+7d' "$dircoreb"/advanced/Scripts/webpage.sh
 
 sed -n "/\"\-[p,c,f,k]/w $_ssc" "$dircoreb"/advanced/Scripts/webpage.sh
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing webpage.sh script 9" && exit 1 ; fi
@@ -206,9 +206,9 @@ sed -i '/\"disabledhcp/d' "$dircoreb"/advanced/Scripts/webpage.sh
 sed -n "/\"layout/w $_ssc" "$dircoreb"/advanced/Scripts/webpage.sh
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing webpage.sh script 14" && exit 1 ; fi
 sed -i '/\"layout/d' "$dircoreb"/advanced/Scripts/webpage.sh
-sed -n "/\"privacymode/w $_ssc" "$dircoreb"/advanced/Scripts/webpage.sh
+sed -n "/\"privacylevel/w $_ssc" "$dircoreb"/advanced/Scripts/webpage.sh
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing webpage.sh script 15" && exit 1 ; fi
-sed -i '/\"privacymode/d' "$dircoreb"/advanced/Scripts/webpage.sh
+sed -i '/\"privacylevel/d' "$dircoreb"/advanced/Scripts/webpage.sh
 
 #sed -i "s|/usr/local/bin|/usr/bin|w $_ssc" "$dircoreb"/advanced/Scripts/webpage.sh
 #if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing webpage.sh script 16" && exit 1 ; fi
