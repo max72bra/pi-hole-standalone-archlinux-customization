@@ -1,6 +1,6 @@
 #!/bin/sh
 
-_pkgver=5.11.4
+_pkgver=5.12
 source_core="https://github.com/pi-hole/pi-hole/archive/v$_pkgver.tar.gz"
 dircorea="pi-hole-$_pkgver"
 dircoreb="$dircorea.cust"
@@ -105,10 +105,10 @@ if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setup gravity.sh 
 sed -i "s|/etc/.pihole/advanced/Scripts/database_migration/gravity|/opt/pihole/database_migration/gravity|w $_ssc" "$dircoreb"/advanced/Scripts/database_migration/gravity-db.sh
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setup gravity.sh 1" && exit 1 ; fi
 
-# setup pihole
+# setup pihole and utils.sh
 sed -i "s|/usr/local/bin|/usr/bin|w $_ssc" "$dircoreb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setup pihole 1" && exit 1 ; fi
-sed -i "s|/run/pihole-FTL.pid|/run/pihole-ftl/pihole-FTL.pid|w $_ssc" "$dircoreb"/pihole
+sed -i "s|/run/pihole-FTL.pid|/run/pihole-ftl/pihole-FTL.pid|w $_ssc" "$dircoreb"/advanced/Scripts/utils.sh
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setup pihole 2" && exit 1 ; fi
 
 # -----------------
