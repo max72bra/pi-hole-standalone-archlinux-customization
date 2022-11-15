@@ -1,6 +1,6 @@
 #!/bin/sh
 
-_pkgver=5.13
+_pkgver=5.14.1
 source_core="https://github.com/pi-hole/pi-hole/archive/v$_pkgver.tar.gz"
 dircorea="pi-hole-$_pkgver"
 dircoreb="$dircorea.cust"
@@ -13,6 +13,22 @@ _ssc="/tmp/sedcontrol"
 wget -q -nc -O pihole-$_pkgver.tar.gz $source_core
 tar xf pihole-$_pkgver.tar.gz
 cp -a $dircorea $dircoreb
+
+# ================
+# version.sh patch
+# ================
+cp -a updatechecker.patch updatechecker-${_pkgver}.patch
+sed -i "s|{{_pkgver}}|v${_pkgver}|w $_ssc" ./updatechecker-${_pkgver}.patch
+if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: updatechecker.sh patch 1" && exit 1 ; fi
+sed -i "s|{{_wwwpkgver}}|v${_wwwpkgver}|w $_ssc" ./updatechecker-${_pkgver}.patch
+if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: updatechecker.sh patch 2" && exit 1 ; fi
+cd "$dircoreb"
+patch -p1 -i ../updatechecker-${_pkgver}.patch
+cd ..
+rm updatechecker-${_pkgver}.patch
+# ================
+# version.sh patch
+# ================
 
 # the return of service management
 sed -i "s|service pihole-FTL restart|systemctl restart pihole-FTL|w $_ssc" "$dircoreb"/pihole
