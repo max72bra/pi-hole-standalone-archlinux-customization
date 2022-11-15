@@ -55,9 +55,9 @@ sed -n "/reconfigurePiholeFunc() {/w $_ssc" "$dircoreb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 3" && exit 1 ; fi
 sed -i '/reconfigurePiholeFunc() {/,+4d' "$dircoreb"/pihole
 
-sed -n "/chronometerFunc() {/w $_ssc" "$dircoreb"/pihole
-if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 6" && exit 1 ; fi
-sed -i '/chronometerFunc() {/,+4d' "$dircoreb"/pihole
+#sed -n "/chronometerFunc() {/w $_ssc" "$dircoreb"/pihole
+#if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 6" && exit 1 ; fi
+#sed -i '/chronometerFunc() {/,+4d' "$dircoreb"/pihole
 
 sed -n "/uninstallFunc() {/w $_ssc" "$dircoreb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 4" && exit 1 ; fi
@@ -71,13 +71,13 @@ sed -n "/tricorderFunc() {/w $_ssc" "$dircoreb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 6" && exit 1 ; fi
 sed -i '/tricorderFunc() {/,+20d' "$dircoreb"/pihole
 
-sed -n "/\"\-[r,c,v,up]/w $_ssc" "$dircoreb"/pihole
+sed -n "/\"\-[r,up]/w $_ssc" "$dircoreb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 7" && exit 1 ; fi
-sed -i '/\"\-[r,c,v,up]/d' "$dircoreb"/pihole
+sed -i '/\"\-[r,up]/d' "$dircoreb"/pihole
 
-sed -n "/^  \-[r,t,l,f,c,v],/w $_ssc" "$dircoreb"/pihole
+sed -n "/^  \-[r,t,l,f],/w $_ssc" "$dircoreb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 11" && exit 1 ; fi
-sed -i '/^  \-[r,t,l,f,c,v],/d' "$dircoreb"/pihole
+sed -i '/^  \-[r,t,l,f],/d' "$dircoreb"/pihole
 
 sed -n "/^  \-up,/w $_ssc" "$dircoreb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 13" && exit 1 ; fi
