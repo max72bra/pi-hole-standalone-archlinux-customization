@@ -43,9 +43,9 @@ sed -n "/flushFunc() {/w $_ssc" "$dircoreb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 2" && exit 1 ; fi
 sed -i '/flushFunc() {/,+4d' "$dircoreb"/pihole
 
-sed -n "/versionFunc() {/w $_ssc" "$dircoreb"/pihole
-if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 3" && exit 1 ; fi
-sed -i '/versionFunc() {/,+4d' "$dircoreb"/pihole
+#sed -n "/versionFunc() {/w $_ssc" "$dircoreb"/pihole
+#if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper #script 3" && exit 1 ; fi
+#sed -i '/versionFunc() {/,+4d' "$dircoreb"/pihole
 
 sed -n "/updatePiholeFunc() {/w $_ssc" "$dircoreb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 2" && exit 1 ; fi
@@ -103,9 +103,9 @@ sed -n "/tricorder/w $_ssc" "$dircoreb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 14" && exit 1 ; fi
 sed -i '/tricorder/d' "$dircoreb"/pihole
 
-sed -n "/updatechecker/w $_ssc" "$dircoreb"/pihole
-if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 19" && exit 1 ; fi
-sed -i '/updatechecker/d' "$dircoreb"/pihole
+#sed -n "/updatechecker/w $_ssc" "$dircoreb"/pihole
+#if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper #script 19" && exit 1 ; fi
+#sed -i '/updatechecker/d' "$dircoreb"/pihole
 
 # -----------------
 
