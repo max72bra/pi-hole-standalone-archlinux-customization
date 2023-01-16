@@ -1,6 +1,6 @@
 #!/bin/sh
 
-_pkgver=5.14.1
+_pkgver=5.15
 source_core="https://github.com/pi-hole/pi-hole/archive/v$_pkgver.tar.gz"
 dircorea="pi-hole-$_pkgver"
 dircoreb="$dircorea.cust"
@@ -49,11 +49,11 @@ sed -i '/flushFunc() {/,+4d' "$dircoreb"/pihole
 
 sed -n "/updatePiholeFunc() {/w $_ssc" "$dircoreb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 2" && exit 1 ; fi
-sed -i '/updatePiholeFunc() {/,+5d' "$dircoreb"/pihole
+sed -i '/updatePiholeFunc() {/,+9d' "$dircoreb"/pihole
 
 sed -n "/reconfigurePiholeFunc() {/w $_ssc" "$dircoreb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 3" && exit 1 ; fi
-sed -i '/reconfigurePiholeFunc() {/,+4d' "$dircoreb"/pihole
+sed -i '/reconfigurePiholeFunc() {/,+8d' "$dircoreb"/pihole
 
 #sed -n "/chronometerFunc() {/w $_ssc" "$dircoreb"/pihole
 #if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 6" && exit 1 ; fi
@@ -61,7 +61,7 @@ sed -i '/reconfigurePiholeFunc() {/,+4d' "$dircoreb"/pihole
 
 sed -n "/uninstallFunc() {/w $_ssc" "$dircoreb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 4" && exit 1 ; fi
-sed -i '/uninstallFunc() {/,+4d' "$dircoreb"/pihole
+sed -i '/uninstallFunc() {/,+8d' "$dircoreb"/pihole
 
 sed -n "/piholeCheckoutFunc() {/w $_ssc" "$dircoreb"/pihole
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 5" && exit 1 ; fi
