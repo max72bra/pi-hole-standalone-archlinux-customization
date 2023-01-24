@@ -1,6 +1,6 @@
 #!/bin/sh
 
-_pkgver=5.15
+_pkgver=5.15.2
 source_core="https://github.com/pi-hole/pi-hole/archive/v$_pkgver.tar.gz"
 dircorea="pi-hole-$_pkgver"
 dircoreb="$dircorea.cust"
