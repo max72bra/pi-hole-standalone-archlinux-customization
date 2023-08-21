@@ -1,6 +1,6 @@
 diff -uprN pi-hole-5.17.1/adlists.list pi-hole-5.17.1.cust/adlists.list
 --- pi-hole-5.17.1/adlists.list	1970-01-01 01:00:00.000000000 +0100
-+++ pi-hole-5.17.1.cust/adlists.list	2023-06-25 10:56:33.429317525 +0200
++++ pi-hole-5.17.1.cust/adlists.list	2023-08-21 19:04:05.649752694 +0200
 @@ -0,0 +1,4 @@
 +https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
 +https://mirror1.malwaredomains.com/files/justdomains
@@ -8,7 +8,7 @@ diff -uprN pi-hole-5.17.1/adlists.list pi-hole-5.17.1.cust/adlists.list
 +https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
 diff -uprN pi-hole-5.17.1/advanced/Scripts/database_migration/gravity-db.sh pi-hole-5.17.1.cust/advanced/Scripts/database_migration/gravity-db.sh
 --- pi-hole-5.17.1/advanced/Scripts/database_migration/gravity-db.sh	2023-05-30 20:27:52.000000000 +0200
-+++ pi-hole-5.17.1.cust/advanced/Scripts/database_migration/gravity-db.sh	2023-06-25 10:56:33.356317059 +0200
++++ pi-hole-5.17.1.cust/advanced/Scripts/database_migration/gravity-db.sh	2023-08-21 19:04:05.565752076 +0200
 @@ -10,7 +10,7 @@
  # This file is copyright under the latest version of the EUPL.
  # Please see LICENSE file for your rights under this license.
@@ -20,7 +20,7 @@ diff -uprN pi-hole-5.17.1/advanced/Scripts/database_migration/gravity-db.sh pi-h
  	local database piholeDir auditFile version
 diff -uprN pi-hole-5.17.1/advanced/Scripts/pihole-reenable.sh pi-hole-5.17.1.cust/advanced/Scripts/pihole-reenable.sh
 --- pi-hole-5.17.1/advanced/Scripts/pihole-reenable.sh	2023-05-30 20:27:52.000000000 +0200
-+++ pi-hole-5.17.1.cust/advanced/Scripts/pihole-reenable.sh	2023-06-25 10:56:33.364317110 +0200
++++ pi-hole-5.17.1.cust/advanced/Scripts/pihole-reenable.sh	2023-08-21 19:04:05.573752135 +0200
 @@ -17,7 +17,7 @@
  # This ensures that pihole ends up in the correct state after a sequence of
  # commands suchs as: `pihole disable 30s; pihole enable; pihole disable`
@@ -32,7 +32,7 @@ diff -uprN pi-hole-5.17.1/advanced/Scripts/pihole-reenable.sh pi-hole-5.17.1.cus
  "${PI_HOLE_BIN_DIR}"/pihole enable
 diff -uprN pi-hole-5.17.1/advanced/Scripts/piholeLogFlush.sh pi-hole-5.17.1.cust/advanced/Scripts/piholeLogFlush.sh
 --- pi-hole-5.17.1/advanced/Scripts/piholeLogFlush.sh	2023-05-30 20:27:52.000000000 +0200
-+++ pi-hole-5.17.1.cust/advanced/Scripts/piholeLogFlush.sh	2023-06-25 10:56:33.377317193 +0200
++++ pi-hole-5.17.1.cust/advanced/Scripts/piholeLogFlush.sh	2023-08-21 19:04:05.588752245 +0200
 @@ -14,7 +14,7 @@ source ${colfile}
  # In case we're running at the same time as a system logrotate, use a
  # separate logrotate state file to prevent stepping on each other's
@@ -101,7 +101,7 @@ diff -uprN pi-hole-5.17.1/advanced/Scripts/piholeLogFlush.sh pi-hole-5.17.1.cust
  fi
 diff -uprN pi-hole-5.17.1/advanced/Scripts/updatecheck.sh pi-hole-5.17.1.cust/advanced/Scripts/updatecheck.sh
 --- pi-hole-5.17.1/advanced/Scripts/updatecheck.sh	2023-05-30 20:27:52.000000000 +0200
-+++ pi-hole-5.17.1.cust/advanced/Scripts/updatecheck.sh	2023-06-25 10:56:33.298316688 +0200
++++ pi-hole-5.17.1.cust/advanced/Scripts/updatecheck.sh	2023-08-21 19:04:05.497751576 +0200
 @@ -8,21 +8,20 @@
  # This file is copyright under the latest version of the EUPL.
  # Please see LICENSE file for your rights under this license.
@@ -131,9 +131,18 @@ diff -uprN pi-hole-5.17.1/advanced/Scripts/updatecheck.sh pi-hole-5.17.1.cust/ad
  }
  
  function get_remote_version() {
+@@ -31,7 +30,7 @@ function get_remote_version() {
+ 
+ 
+ function get_remote_hash(){
+-    git ls-remote "https://github.com/pi-hole/${1}" --tags "${2}" | awk '{print substr($0, 0,8);}' || return 1
++    echo "builtfromreleasetarball" || return 1
+ }
+ 
+ # Source the setupvars config file
 diff -uprN pi-hole-5.17.1/advanced/Scripts/utils.sh pi-hole-5.17.1.cust/advanced/Scripts/utils.sh
 --- pi-hole-5.17.1/advanced/Scripts/utils.sh	2023-05-30 20:27:52.000000000 +0200
-+++ pi-hole-5.17.1.cust/advanced/Scripts/utils.sh	2023-06-25 10:56:33.362317097 +0200
++++ pi-hole-5.17.1.cust/advanced/Scripts/utils.sh	2023-08-21 19:04:05.571752120 +0200
 @@ -108,7 +108,7 @@ getFTLAPIPort(){
  #######################
  getFTLPIDFile() {
@@ -154,7 +163,7 @@ diff -uprN pi-hole-5.17.1/advanced/Scripts/utils.sh pi-hole-5.17.1.cust/advanced
      local FTL_PID_FILE="${1}"
 diff -uprN pi-hole-5.17.1/advanced/Scripts/webpage.sh pi-hole-5.17.1.cust/advanced/Scripts/webpage.sh
 --- pi-hole-5.17.1/advanced/Scripts/webpage.sh	2023-05-30 20:27:52.000000000 +0200
-+++ pi-hole-5.17.1.cust/advanced/Scripts/webpage.sh	2023-06-25 10:56:33.428317518 +0200
++++ pi-hole-5.17.1.cust/advanced/Scripts/webpage.sh	2023-08-21 19:04:05.648752686 +0200
 @@ -24,10 +24,10 @@ readonly gravityDBfile="/etc/pihole/grav
  
  
@@ -381,7 +390,7 @@ diff -uprN pi-hole-5.17.1/advanced/Scripts/webpage.sh pi-hole-5.17.1.cust/advanc
          "addcustomcname"      ) AddCustomCNAMERecord;;
 diff -uprN pi-hole-5.17.1/advanced/Templates/logrotate pi-hole-5.17.1.cust/advanced/Templates/logrotate
 --- pi-hole-5.17.1/advanced/Templates/logrotate	2023-05-30 20:27:52.000000000 +0200
-+++ pi-hole-5.17.1.cust/advanced/Templates/logrotate	2023-06-25 10:56:33.372317161 +0200
++++ pi-hole-5.17.1.cust/advanced/Templates/logrotate	2023-08-21 19:04:05.584752216 +0200
 @@ -1,4 +1,4 @@
 -/var/log/pihole/pihole.log {
 +/run/log/pihole/pihole.log {
@@ -399,7 +408,7 @@ diff -uprN pi-hole-5.17.1/advanced/Templates/logrotate pi-hole-5.17.1.cust/advan
  	copytruncate
 diff -uprN pi-hole-5.17.1/advanced/dnsmasq.conf.original pi-hole-5.17.1.cust/advanced/dnsmasq.conf.original
 --- pi-hole-5.17.1/advanced/dnsmasq.conf.original	2023-05-30 20:27:52.000000000 +0200
-+++ pi-hole-5.17.1.cust/advanced/dnsmasq.conf.original	2023-06-25 10:56:33.428317518 +0200
++++ pi-hole-5.17.1.cust/advanced/dnsmasq.conf.original	2023-08-21 19:04:05.648752686 +0200
 @@ -646,3 +646,4 @@
  
  # Include all files in a directory which end in .conf
@@ -407,7 +416,7 @@ diff -uprN pi-hole-5.17.1/advanced/dnsmasq.conf.original pi-hole-5.17.1.cust/adv
 +conf-dir=/etc/dnsmasq.d/,*.conf
 diff -uprN pi-hole-5.17.1/gravity.sh pi-hole-5.17.1.cust/gravity.sh
 --- pi-hole-5.17.1/gravity.sh	2023-05-30 20:27:52.000000000 +0200
-+++ pi-hole-5.17.1.cust/gravity.sh	2023-06-25 10:56:33.351317026 +0200
++++ pi-hole-5.17.1.cust/gravity.sh	2023-08-21 19:04:05.560752039 +0200
 @@ -16,10 +16,10 @@ export LC_ALL=C
  coltable="/opt/pihole/COL_TABLE"
  source "${coltable}"
@@ -434,7 +443,7 @@ diff -uprN pi-hole-5.17.1/gravity.sh pi-hole-5.17.1.cust/gravity.sh
  curl_connect_timeout=10
 diff -uprN pi-hole-5.17.1/pihole pi-hole-5.17.1.cust/pihole
 --- pi-hole-5.17.1/pihole	2023-05-30 20:27:52.000000000 +0200
-+++ pi-hole-5.17.1.cust/pihole	2023-06-25 10:56:33.366317122 +0200
++++ pi-hole-5.17.1.cust/pihole	2023-08-21 19:04:05.576752157 +0200
 @@ -15,7 +15,7 @@ readonly PI_HOLE_SCRIPT_DIR="/opt/pihole
  # they might get set again when the installer is sourced. This causes an
  # error due to modifying a readonly variable.
