@@ -241,6 +241,8 @@ sed -i '/\"disabledhcp/d' "$dircoreb"/advanced/Scripts/webpage.sh
 sed -n "/\"layout/w $_ssc" "$dircoreb"/advanced/Scripts/webpage.sh
 if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing webpage.sh script 15" && exit 1 ; fi
 sed -i '/\"layout/d' "$dircoreb"/advanced/Scripts/webpage.sh
+sed -i "s|s interface listening behavior|s interface listening behavior\"|w $_ssc" "$dircoreb"/advanced/Scripts/webpage.sh
+if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing webpage.sh script 16" && exit 1 ; fi
 #sed -n "/\"privacylevel/w $_ssc" "$dircoreb"/advanced/Scripts/webpage.sh
 #if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing webpage.sh script 16" && exit 1 ; fi
 #sed -i '/\"privacylevel/d' "$dircoreb"/advanced/Scripts/webpage.sh
