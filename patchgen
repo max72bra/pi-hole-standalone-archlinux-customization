@@ -1,6 +1,6 @@
 #!/bin/sh
 
-_pkgver=5.17.3
+_pkgver=5.18.2
 _pkgrel=1
 source_core="https://github.com/pi-hole/pi-hole/archive/v$_pkgver.tar.gz"
 dircorea="pi-hole-$_pkgver"
@@ -40,9 +40,9 @@ if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: the return of ser
 #if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 1" && exit 1 ; fi
 #sed -i '/debugFunc() {/,+16d' "$dircoreb"/pihole
 
-sed -n "/flushFunc() {/w $_ssc" "$dircoreb"/pihole
-if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 2" && exit 1 ; fi
-sed -i '/flushFunc() {/,+4d' "$dircoreb"/pihole
+#sed -n "/flushFunc() {/w $_ssc" "$dircoreb"/pihole
+#if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper script 2" && exit 1 ; fi
+#sed -i '/flushFunc() {/,+4d' "$dircoreb"/pihole
 
 #sed -n "/versionFunc() {/w $_ssc" "$dircoreb"/pihole
 #if [ -s $_ssc ] ; then rm $_ssc ; else echo "   ==> Sed error: setting up and securing pihole wrapper #script 3" && exit 1 ; fi
